@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1702447137 source:c:\users\asus\desktop\spl_1_project\splprojectcricketscoreboard\main.cpp
+	<bits/stdc++.h>
+	"MatchSchedule.h"
+	"OngoingMatchScore.h"
+	"PlayerInformation.h"
+	"PremierLeagueScheduler.h"
+	"RandomDecissionTree.h"
+	"PlayerRanking.h"
+
+1702378223 c:\users\asus\desktop\spl_1_project\splprojectcricketscoreboard\matchschedule.h
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+
+1702465813 c:\users\asus\desktop\spl_1_project\splprojectcricketscoreboard\ongoingmatchscore.h
+	<windows.h>
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<string.h>
+
+1702378278 c:\users\asus\desktop\spl_1_project\splprojectcricketscoreboard\playerinformation.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1702378219 c:\users\asus\desktop\spl_1_project\splprojectcricketscoreboard\premierleaguescheduler.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1702465163 c:\users\asus\desktop\spl_1_project\splprojectcricketscoreboard\randomdecissiontree.h
+	<bits/stdc++.h>
+	<vector>
+
+1702450082 c:\users\asus\desktop\spl_1_project\splprojectcricketscoreboard\playerranking.h
+	<bits/stdc++.h>
+	<stdio.h>
+

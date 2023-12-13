@@ -1,0 +1,16 @@
+8
+Rajshahi
+Dhaka
+Chittagong
+Khulna
+Rongpur
+Barisal
+Sylhet
+Cumilla
+3
+Dhaka
+Sylhet
+Chittagong
+12
+12
+2023

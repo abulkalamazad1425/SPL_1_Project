@@ -1,0 +1,38 @@
+ViratKohli 1000 20 112.3 weak
+SubmanGill 600  25  100  medium
+ShreyasIyer 200  15  90 strong
+BabarAzam 400  30  80  strong
+FakarZaman 500 23  123 weak
+InjamamUl  200 25  70  strong
+Tamim     450  15  110  strong
+DavidWarner 800 18 109  medium
+StieveSmith 1000 30  124  medium
+Mushfiq   750  25   99   strong
+Shakib    500  25   130   strong
+Liton    800   20   100   medium
+Shanto   650   25    80   strong
+Hridoy   250   10    145  medium
+Mahmudullah  600  20  110  strong
+END
+
+Mustafiz       70         120        4.2        40                   30
+Taskin         45         90         3.8        30                   15
+Shoriful       80         140        4.5        50                   30
+Shahadat       60         110        4.0        35                   25
+Mehedi         55         100        4.2        38                   17
+Shakib         90         150        4.8        60                   30
+Taijul         40         95         3.5        28                   12
+Shahin         75         130        4.3        45                   30
+HasanAli       40         80         3.7        25                   15
+Imad           65         110        4.1        46                   19
+Starc          85         140        4.7        50                   35
+Bumrah         48         95         3.9        32                   16
+Aswin          55         100        4.0        40                   15
+Chahal         68         130        4.4        42                   26
+Zampa          40         85         3.6        27                   13
+Rashid         68         115        4.3        48                   20
+Russel         58         105        4.1        35                   23
+Bravo          90         155        4.9        58                   32
+T.Boult        50         100        4.2        35                   15
+Malinga        72         125        4.4        46                   26
+END
