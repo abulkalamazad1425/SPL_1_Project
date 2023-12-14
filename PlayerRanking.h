@@ -1,8 +1,6 @@
 #ifndef PLAYERRANKING_H_INCLUDED
 #define PLAYERRANKING_H_INCLUDED
-
 #include<bits/stdc++.h>
-#include<stdio.h>
 using namespace std;
 
 #define perRunRating .5
@@ -17,34 +15,22 @@ using namespace std;
 #define perBowlerDismissed 1.5
 #define IdealEconomy 5
 
-typedef struct Boller{
+typedef struct Player{
     char name[20];
+    double run;
     double wickets;
     double innings;
+    double sR;
+    char opponent[20];
     double economyRate;
     double batsmenDismissed;
     double bowlerDismissed;
     double rating;
 
-}Boller;
-
-typedef struct Batsmen{
-    char name[20];
-    double run;
-    double innings;
-    double sR;
-    char opponent[20];
-    double rating;
-}Batsmen;
-
-Boller bowler[100];
-Batsmen batsman[100];
-int num_batsman=0;
-int num_bowler=0;
+}Player;
 
 
-
-double computeBatsmanRating(Batsmen batter ){
+double computeBatsmanRating(Player batter ){
 
     if(batter.opponent == "strong"){
         return (strong*batter.run * perRunRating + batter.innings * perInningsRating + strong * batter.sR * perStrikeRateRating);
@@ -57,7 +43,7 @@ double computeBatsmanRating(Batsmen batter ){
 
 }
 
-double computeBowlerRating(Boller boler){
+double computeBowlerRating(Player boler){
     double rating = perWicketRating * perBatsmanDismissed * boler.batsmenDismissed;
     rating += perWicketRating * perBowlerDismissed * boler.bowlerDismissed;
     rating *= IdealEconomy/boler.economyRate;
@@ -65,8 +51,62 @@ double computeBowlerRating(Boller boler){
     return rating;
 }
 
+void mergeS(Player player[], int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    Player leftArr[n1];
+    Player rightArr[n2];
+
+    for (int i = 0; i < n1; i++)
+        leftArr[i] = player[left + i];
+
+    for (int j = 0; j < n2; j++)
+        rightArr[j] = player[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+
+    while (i < n1 && j < n2) {
+        if (leftArr[i].rating >= rightArr[j].rating) {
+            player[k] = leftArr[i];
+            i++;
+        } else {
+            player[k] = rightArr[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        player[k] = leftArr[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        player[k] = rightArr[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(Player player[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        mergeSort(player, left, mid);
+        mergeSort(player, mid + 1, right);
+
+        mergeS(player, left, mid, right);
+    }
+}
+
 int ListOfPlayerRanking(){
-    cout<<"come"<<endl;
+    Player bowler[100];
+    Player batsman[100];
+    int num_batsman=0;
+    int num_bowler=0;
+
     FILE * freP = fopen("BatsmanRank.txt", "r");
     if(freP == 0){
         cout<< "Error"<<endl;
@@ -89,21 +129,18 @@ int ListOfPlayerRanking(){
 
     }
 
-    for(int i=1;i<num_batsman-1;i++){
-        for(int j=num_batsman-1;j-i>=0;j--){
-            if(batsman[j].rating > batsman[j-1].rating){
-                Batsmen B = batsman[j-1];
-                batsman[j-1] = batsman[j];
-                batsman[j] = B;
-            }
+    mergeSort(batsman,0,num_batsman-1);
 
-        }
-    }
+
     cout<<"\t\tBtsman Rank List"<<endl;
     cout<<"\t\t================"<<endl;
+    cout<<"No:  Name \t Run\t Innings s/r\t Rating\n";
+    cout<<"===============================================\n";
+
     for(int i=0;i<num_batsman;i++){
         cout << i+1<<".  "<< batsman[i].name <<"\t  "<< batsman[i].run <<" \t "<< batsman[i].innings<< "\t "<<batsman[i].sR<<"\t "<<batsman[i].rating<<endl;
     }
+    cout<<"===============================================\n\n";
 
 
 
@@ -126,24 +163,20 @@ int ListOfPlayerRanking(){
 
 
     }
-    for(int i=1;i<num_bowler-1;i++){
-        for(int j=num_bowler-1;j-i>=0;j--){
-            if(bowler[j].rating > bowler[j-1].rating){
-                Boller B = bowler[j-1];
-                bowler[j-1] = bowler[j];
-                bowler[j] = B;
-            }
+    mergeSort(bowler,0,num_bowler-1);
 
-        }
-    }
     cout<<"\n\n\n\t\tBowler Rank List"<<endl;
     cout<<"\t\t================"<<endl;
+    cout<<"No:  Name \t Wicket\t Innings e/r Btsmandis Bowler_dis Rating\n";
+    cout<<"========================================================================\n";
     for(int i=0;i<num_bowler;i++){
         cout << i+1<<".  "<< bowler[i].name <<"\t  "<< bowler[i].wickets <<" \t "<< bowler[i].innings<< "\t "<<bowler[i].economyRate<<" \t"<<bowler[i].batsmenDismissed;
         cout<<" \t "<<bowler[i].bowlerDismissed<<" \t "<<bowler[i].rating<<endl;
     }
+    cout<<"========================================================================\n";
     cout<<"\n\n\n\n";
     fclose(freP);
+
 
     return 1;
 
