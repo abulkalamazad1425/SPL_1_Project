@@ -7,10 +7,9 @@
 #include "PremierLeagueScheduler.h"
 #include "RandomDecissionTree.h"
 #include "PlayerRanking.h"
+#include "RegressionPredictor.h"
 
 using namespace std;
-
-
 
 int main(){
 
@@ -22,10 +21,12 @@ int main(){
 
             printf("3. Player Information.\n");
             printf("4. Ongoing Match Score Update.\n");
-            printf("5. Predict the winner.\n");
+            printf("5. Predict the winner by Decission Tree.\n");
             printf("6. Show Player Rank List.\n");
+            printf("7. Predict the winner by Linear Regression.\n");
             printf("Select One( 0 for quit) : ");
             scanf("%d",&option);
+            printf("\n\n\n");
 
             if(option==1)
                 UpcomingMatch();
@@ -41,6 +42,9 @@ int main(){
             }
             else if(option == 6){
                 ListOfPlayerRanking();
+            }
+            else if(option == 7){
+                predictByRegression();
             }
             else
                 printf("Choose correctly");
