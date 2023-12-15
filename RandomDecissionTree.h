@@ -39,7 +39,8 @@ struct node
 
 void calculate_gain_value(node *row_information);
 void addChildren(node *children);
-
+void mergeSort(std::vector<row_info> &arr,int sorting_colum_number, int left, int right);
+void sortAttribute(node *r, int column);
 
 
 
@@ -83,6 +84,7 @@ struct node *create_tree()
     {
         root->row.push_back(values[i]);
     }
+    root->internal_class_name="ROOT";
     calculate_gain_value(root);
     root->child = new node *[root->child_number];
 
@@ -330,18 +332,58 @@ double find_probability_value(string num, string class_value, int index, node *r
 
 
 int sorting_colum_number;
-void sortAttribute(node *r, int column)
-{
-    sorting_colum_number = column;
-    std::sort(r->row.begin(), r->row.end(), [](const row_info &a, const row_info &b)
-              { return a.attribute_Info[sorting_colum_number] < b.attribute_Info[sorting_colum_number]; });
-}
+
+
 void sortNumericAttribute(node *r,int column){
     sorting_colum_number = column;
-    std::sort(r->row.begin(), r->row.end(), [](const row_info &a, const row_info &b)
-              { return a.numericAttribute_Info[sorting_colum_number] < b.numericAttribute_Info[sorting_colum_number]; });
+    mergeSort(r->row,sorting_colum_number,0,r->row.size()-1);
 
 }
+
+
+
+void mergeS(std::vector<row_info> &arr,int sorting_colum_number, int left, int middle, int right) {
+    int n1 = middle - left + 1;
+    int n2 = right - middle;
+
+
+
+    std::vector<row_info> leftArr(arr.begin() + left, arr.begin() + left + n1);
+    std::vector<row_info> rightArr(arr.begin() + middle + 1, arr.begin() + middle + 1 + n2);
+
+
+    int i = 0, j = 0, k = left;
+
+
+    while (i < n1 && j < n2) {
+        if (leftArr[i].numericAttribute_Info[sorting_colum_number] <= rightArr[j].numericAttribute_Info[sorting_colum_number]) {
+            arr[k++] = leftArr[i++];
+        } else {
+            arr[k++] = rightArr[j++];
+        }
+    }
+
+
+    while (i < n1) {
+        arr[k++] = leftArr[i++];
+    }
+
+
+    while (j < n2) {
+        arr[k++] = rightArr[j++];
+    }
+}
+
+
+void mergeSort(std::vector<row_info> &arr,int sorting_colum_number, int left, int right) {
+    if (left < right) {
+        int middle = (left + right)/2;
+        mergeSort(arr,sorting_colum_number, left, middle);
+        mergeSort(arr,sorting_colum_number, middle + 1, right);
+        mergeS(arr,sorting_colum_number, left, middle, right);
+    }
+}
+
 
 
 
@@ -463,6 +505,12 @@ void calculate_gain_value(node *row_information)
     else{
        sortNumericAttribute(row_information, row_information->attribute_number);
     }
+}
+void sortAttribute(node *r, int column)
+{
+    sorting_colum_number = column;
+    std::sort(r->row.begin(), r->row.end(), [](const row_info &a, const row_info &b)
+              { return a.attribute_Info[sorting_colum_number] < b.attribute_Info[sorting_colum_number]; });
 }
 
 string find_decision(node *level_data, row_info test_data)
