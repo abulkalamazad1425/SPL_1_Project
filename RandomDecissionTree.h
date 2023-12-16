@@ -9,7 +9,6 @@ using namespace std;
 #define MAX 30
 #define COL 7
 #define MAX_DATA 40
-//#define START 100
 
 struct row_info
 {
@@ -21,16 +20,15 @@ struct row_info
 };
 
 row_info values[MAX_DATA], all_values[MAX_DATA];
-int rand_col[5][42] = {0}, tree_index = 0;
+
 double Thresold;
 
 struct node
 {
     int attribute_number, child_number;
-    string class_name, internal_class_name;
+    string class_name ,internal_class_name;
     double Thresold;
     double thresold[7];
-    int level;
     bool leaf = false;
     node **child;
     vector<row_info> row;
@@ -44,7 +42,7 @@ void sortAttribute(node *r, int column);
 
 
 
-void load_data(int seed)
+void load_data()
 {
     for (int i = 0; i < MAX_DATA; i++)
     {
@@ -99,7 +97,7 @@ struct node *create_tree()
             if (root->row[i].attribute_Info[root->attribute_number] == first_value)
             {
                 children->row.push_back(root->row[i]);
-                children->level=1;
+
             }
             else
             {
@@ -110,7 +108,7 @@ struct node *create_tree()
                 children = new node();
 
                 children->internal_class_name = root->row[i].attribute_Info[root->attribute_number];
-                children->level=1;
+
                 root->child[++child_index] = children;
                 children->row.push_back(root->row[i]);
                 first_value = root->row[i].attribute_Info[root->attribute_number];
@@ -128,7 +126,7 @@ struct node *create_tree()
             if (root->row[i].numericAttribute_Info[root->attribute_number] <= root->Thresold || flag)
             {
                 children->row.push_back(root->row[i]);
-                children->level=1;
+
             }
             else
             {
@@ -138,7 +136,7 @@ struct node *create_tree()
                 children = new node();
 
                 children->internal_class_name = "numericAttribute"+ std::to_string(root->attribute_number) +">" + std::to_string(root->Thresold);
-                children->level=1;
+
                 root->child[++child_index] = children;
                 children->row.push_back(root->row[i]);
                 flag = true;
@@ -160,8 +158,7 @@ struct node *create_tree()
     cout<<endl<<endl;
 
 
-    //cout <<root->internal_class_name<<" "<< root->child[0]->internal_class_name<<" "<<root->child[1]->internal_class_name<<endl;
-    //cout << root->child_number <<endl;
+
     root->row.clear();
     return root;
 }
@@ -203,7 +200,7 @@ void addChildren(node *children)
 
     if(children->attribute_number < 4){
         new_child->internal_class_name = children->row[0].attribute_Info[children->attribute_number];
-        new_child->level = children->level+1;
+
         children->child[0] = new_child;
         int child_index = 0;
         string first_value = children->row[0].attribute_Info[children->attribute_number];
@@ -221,7 +218,7 @@ void addChildren(node *children)
 
                 new_child = new node();
                 new_child->internal_class_name = children->row[i].attribute_Info[children->attribute_number];
-                new_child->level = children->level+1;
+
                 children->child[++child_index] = new_child;
 
                 new_child->row.push_back(children->row[i]);
@@ -241,9 +238,9 @@ void addChildren(node *children)
 
         new_child->internal_class_name = "numericAttribute"+ std::to_string(children->attribute_number) +"<=" + std::to_string(children->Thresold);
 
-        //cout << new_child->internal_class_name<<endl;
 
-        new_child->level = children->level+1;
+
+
         children->child[0] = new_child;
 
         int child_index = 0;
@@ -259,15 +256,15 @@ void addChildren(node *children)
             {
 
                 addChildren(new_child);
-                //cout << new_child->internal_class_name<<endl;
+
 
                 new_child = new node();
                 children->child[++child_index] = new_child;
                 new_child->internal_class_name = "numericAttribute"+ std::to_string(children->attribute_number) +">" + std::to_string(children->Thresold);
 
-                //cout << new_child->internal_class_name<<endl;
 
-                new_child->level = children->level+1;
+
+
                 new_child->row.push_back(children->row[i]);
                 flag = true;
             }
@@ -288,8 +285,7 @@ void addChildren(node *children)
 
     }
     cout<<endl<<endl;
-    //cout <<children->internal_class_name<<" "<< children->child[0]->internal_class_name<<" "<<children->child[1]->internal_class_name<<endl;
-    //cout << children->child_number <<endl;
+
     children->row.clear();
 
 }
@@ -521,10 +517,10 @@ string find_decision(node *level_data, row_info test_data)
     int i = 0;
     if (level_data->leaf )
     {
-        //cout<<"leaf\n";
+
 
             ch = level_data->class_name;
-            //cout <<level_data->class_name<<endl;
+
 
     }
     else
@@ -598,7 +594,7 @@ int Prediction()
     node *roots;
     load_all_data();
 
-    load_data(1209);
+    load_data();
 
     roots = create_tree();
 
@@ -640,6 +636,5 @@ int Prediction()
 
     return 0;
 }
-
 
 #endif // RANDOMDECISSIONTREE_H_INCLUDED
