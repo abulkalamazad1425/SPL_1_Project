@@ -39,14 +39,17 @@ struct Details
 
 
 
-int number_of_overs=3;
+int number_of_overs;
 int target;
 int B_team,F_team;
 int toss;
 int strk,Striker1 = 0,Striker2 = 1,bow = 0;
 int thisOver[8],tO=0;
 int IndexArr[11],IndexArrW[11];
-
+char Tosswinner[30],decision[30];
+char city[30],stadium[30];
+int matchID = 40;
+char winner[30];
 
 
 void ScoreTable1();
@@ -59,6 +62,7 @@ void MergeforWicket(int f,int m,int l);
 
 
 
+
 void getTeamAndPlayerNames()
 {
     FILE *PNP;
@@ -68,21 +72,60 @@ void getTeamAndPlayerNames()
         printf("\n\"TeamAndPlaying11.txt\" file has an error\n");
         exit(1);
     }
-    fscanf(PNP,"%s",team[0].name);
-    printf("%s\n",team[0].name);
-    fscanf(PNP,"%s",team[1].name);
-    printf("%s\n",team[1].name);
+    char team1[30],team2[30];
+
+    printf("\nEnter the name of city and stadium: ");
+    scanf("%s %s",city,stadium);
+    printf("\nEnter the name of the 2 team:\n");
+    scanf("%s",team1);
+    scanf("%s",team2);
+    printf("\nToss: ");
+    scanf("%s",Tosswinner);
+    printf("\nDecision: ");
+    scanf("%s",decision);
+
+    if(strcmp(decision,"Bat")==0){
+
+            if(strcmp(Tosswinner,team1)==0){
+                 strcpy(team[0].name,team1);
+                 strcpy(team[1].name,team2);
+
+            }
+            else{
+                strcpy(team[0].name,team2);
+                strcpy(team[1].name,team1);
+            }
+
+    }
+    else{
+        if(strcmp(Tosswinner,team1)==0){
+                 strcpy(team[0].name,team2);
+                 strcpy(team[1].name,team1);
+
+            }
+            else{
+                strcpy(team[0].name,team1);
+                strcpy(team[1].name,team2);
+            }
+    }
+    printf("Write the name of 11 batsman and 5 bowler of team %s in TeamAndPlaying11.txt file \n ",team[0].name);
+    getchar();
+    getchar();
+    printf("Write the name of 11 batsman and 5 bowler of team %s in TeamAndPlaying11.txt file \n ",team[1].name);
+    getchar();
+    printf("\nEnter the number of over: ");
+    scanf("%d",&number_of_overs);
 
     for(int i=0;i<2;i++)
     {
         for(int j=0;j<11;j++)
         {
             fscanf(PNP,"%s",team[i].batsman[j].playerName);
-            //printf("%s\n",team[i].batsman[j].playerName);
+
         }
         for(int j=0;j<5;j++){
             fscanf(PNP,"%s",team[i].bowler[j].playerName);
-            //printf("%s\n",team[i].bowler[j].playerName);
+
         }
     }
     fclose(PNP);
@@ -133,7 +176,7 @@ void ScoreUpdate()
     for(int i=0;i<number_of_overs;i++)
     {
 
-            //team[B_team].total_over[0] = i;
+
 
             int temp;
             tO = 0;
@@ -141,8 +184,7 @@ void ScoreUpdate()
             {
 
 
-                //printf("\nOver %d.%d \nEnter  the score : ",i,j);
-                //scanf("%d",&temp);
+
                 srand(time(0));
                 temp = rand()%11;
                 fprintf(WS,"Ball %d.%d : %d\t",i,j,temp);
@@ -156,8 +198,7 @@ void ScoreUpdate()
                     team[B_team].total_runs += 1;
                     team[F_team].bowler[bow].runsLossed += 1;
 
-                    //temp = 1;
-                    //team[B_team].batsman[k].runsScored -= temp;
+
                 }
                 else if(temp == 7)
                 {
@@ -171,7 +212,7 @@ void ScoreUpdate()
                       fprintf(WS,"extra : %d\t",extra);
                       if (extra != 5)
                       {
-                             //temp=6;
+
                             team[B_team].total_runs += extra;
                             team[F_team].bowler[bow].runsLossed += extra;
                             team[B_team].batsman[strk].runsScored += extra;
@@ -198,12 +239,12 @@ void ScoreUpdate()
                     fprintf(WS,"By : %d\t",temp);
                     team[B_team].total_runs += temp;
                     team[F_team].bowler[bow].runsLossed += temp;
-                    //team[B_team].batsman[strk].runsScored += temp;
+
                     team[B_team].batsman[strk].played_ball++;
                 }
                 else if((temp == 9)&& (thisOver[tO-2]!=7))
                 {
-                      //printf("Player %d has been out :");
+
                       team[B_team].Num_Wicket++;
                       team[B_team].batsman[strk].played_ball++;
                       team[F_team].bowler[bow].wicket++;
@@ -344,8 +385,7 @@ void ScoreUpdate()
                 }
 
                 fprintf(WS,"\n");
-                //printf("\nNext..");
-                //getchar();
+
 
             }
             if(team[B_team].Num_Wicket==10)
@@ -372,7 +412,7 @@ void ScoreUpdate()
     StrikeRate();
     ScoreTable1();
     target = team[B_team].total_runs+1;
-    //printf("\n%s set the target %d runs\n",team[B_team].name,team[B_team].total_runs+1);
+
     B_team = 1;
     F_team = 0;
     strk = 0;
@@ -385,15 +425,14 @@ void ScoreUpdate()
     for(int i=0;i<number_of_overs;i++)
     {
 
-            //team[B_team].total_over[0] = i;
+
             srand(time(0));
             int temp;
             tO=0;
             for(int j=1;j<=6;j++)
             {
 
-                //printf("\nOver %d.%d \nEnter  the score : ",i,j);
-                //scanf("%d",&temp);
+
                 temp = rand()%11;
                 fprintf(WS,"Ball %d.%d : %d\t",i,j,temp);
                 thisOver[tO]=temp;
@@ -406,8 +445,7 @@ void ScoreUpdate()
                     team[B_team].total_runs += 1;
                     team[F_team].bowler[bow].runsLossed += 1;
 
-                    //temp = 1;
-                    //team[B_team].batsman[k].runsScored -= temp;
+
                 }
                 else if(temp == 7)
                 {
@@ -421,7 +459,7 @@ void ScoreUpdate()
                       fprintf(WS,"extra : %d\t",extra);
                       if (extra != 5)
                       {
-                             //temp=6;
+
                             team[B_team].total_runs += extra;
                             team[F_team].bowler[bow].runsLossed += extra;
                             team[B_team].batsman[strk].runsScored += extra;
@@ -447,12 +485,12 @@ void ScoreUpdate()
                     fprintf(WS,"By : %d\t",temp);
                     team[B_team].total_runs += temp;
                     team[F_team].bowler[bow].runsLossed += temp;
-                    //team[B_team].batsman[strk].runsScored += temp;
+
                     team[B_team].batsman[strk].played_ball++;
                 }
                 else if((temp == 9)&& (thisOver[tO-2]!=7))
                 {
-                      //printf("Player %d has been out :");
+
                       team[B_team].Num_Wicket++;
                       team[B_team].batsman[strk].played_ball++;
                       team[F_team].bowler[bow].wicket++;
@@ -578,9 +616,7 @@ void ScoreUpdate()
                 DisplayScoreBoard();
                 if(team[B_team].total_runs>team[F_team].total_runs)
                 {
-                    //printf("\n\n\t\t\t\t%s win the match....\n\n",team[B_team].name);
-                    //cout<<"\n\n\t\t\t\t"<<team[1].name<<" has beaten "<<team[0].name<<"........!";
-                    //check=0;
+
                     break;
                 }
 
@@ -595,8 +631,7 @@ void ScoreUpdate()
 
                 }
                 fprintf(WS,"\n");
-                //printf("\nNext..");
-                //getchar();
+
 
             }
              if((team[B_team].Num_Wicket==10) || (team[B_team].total_runs > team[F_team].total_runs))
@@ -619,14 +654,16 @@ void ScoreUpdate()
             }
     }
 
-    //if((team[B_team].Num_Wicket==10) || (team[B_team].total_runs > team[F_team].total_runs)){
+
                     if(team[B_team].total_runs > team[F_team].total_runs){
+                        strcpy(winner,team[B_team].name);
                         printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d wicket...\n",team[B_team].name,(10-team[B_team].Num_Wicket));
                     }
                     else if(team[B_team].total_runs == team[F_team].total_runs){
                         printf("\n\n\t\t\t\tMATCH DRAWN....\n");
                     }
                     else{
+                        strcpy(winner,team[B_team].name);
                         printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d runs...\n",team[F_team].name,(team[F_team].total_runs-team[B_team].total_runs));
 
                     }
@@ -634,7 +671,7 @@ void ScoreUpdate()
                     ScoreTable1();
 
 
-            //}
+
     fclose(WS);
 }
 
@@ -649,7 +686,20 @@ void DisplayScoreBoard(){
     printf("%s \t|  %d  (%d)   | ",team[B_team].batsman[Striker1].playerName,team[B_team].batsman[Striker1].runsScored,team[B_team].batsman[Striker1].played_ball);
     printf("%s \t|  %d  (%d)   |",team[B_team].batsman[Striker2].playerName,team[B_team].batsman[Striker2].runsScored,team[B_team].batsman[Striker2].played_ball);
     for(int i=0;i<tO;i++){
-        printf("%d ",thisOver[i]);
+        if(thisOver[i]==5){
+            printf("Wd ");
+        }
+        else if(thisOver[i]==7){
+            printf("N ");
+        }
+         else if(thisOver[i]==8){
+            printf("lB ");
+        }
+        else if(thisOver[i]==9 || thisOver[i]== 10 ){
+            printf("W ");
+        }
+        else
+            printf("%d ",thisOver[i]);
     }
     printf("| %.1lf |",CurrentRR());
     if(B_team==1)
@@ -657,17 +707,28 @@ void DisplayScoreBoard(){
 
     printf("\n-------------------------------------------------------------------------------------\n");
 
+
+    Sleep(100);
     printf("NEXT");
-    Sleep(1000);
-    //getchar();
+
+}
+
+void update_new_File(){
+
+    FILE *nFP = fopen("new.txt","a");
+    double rr = (((double)(team[F_team].total_runs+1))/number_of_overs);
+    int run = (50/number_of_overs) * team[F_team].total_runs;
+    fprintf(nFP,"\n%d %s \t %s \t %s \t %s \t %d\t%d\t%lf\t%s",++matchID,Tosswinner,decision,city,stadium,run,team[F_team].Num_Wicket,rr,winner);
+    fclose(nFP);
+
 }
 
 int UpdateScore(){
-    printf("\nEnter the number of over: ");
-    scanf("%d",&number_of_overs);
     getTeamAndPlayerNames();
+
     ScoreUpdate();
     SummaryTable();
+    update_new_File();
     return 0;
 }
 
